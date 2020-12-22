@@ -32,22 +32,23 @@ namespace Client
         {
             Application.Init();
 
-//          Верхнее меню приложения.
-            Menu =  new MenuBar(new MenuBarItem[] {
+            //          Верхнее меню приложения.
+            Menu = new MenuBar(new MenuBarItem[] {
                     new MenuBarItem("_App", new MenuItem[] {
                     new MenuItem("_Quit", "-- Close the App.", Application.RequestStop),
                     }),
                     })
-            
+
             {
-                    X = 0, Y = 0,
-                    Width = Dim.Fill(),
-                    Height = 1,
+                X = 0,
+                Y = 0,
+                Width = Dim.Fill(),
+                Height = 1,
 
             };
             Application.Top.Add(Menu);
 
-//          Главное окно приложения.
+            //          Главное окно приложения.
             mainWin = new Window()
             {
                 X = 0,
@@ -57,9 +58,10 @@ namespace Client
                 Title = "Sharp Messenger",
             };
             Application.Top.Add(mainWin);
-          
-//          MessagesBox.
-            messagesBox = new Window() {
+
+            //          MessagesBox.
+            messagesBox = new Window()
+            {
                 X = 0,
                 Y = 0,
                 Width = mainWin.Width,
@@ -68,8 +70,9 @@ namespace Client
             };
             mainWin.Add(messagesBox);
 
-//          Надпись UserName.
-            usernameLabel = new Label() {
+            //          Надпись UserName.
+            usernameLabel = new Label()
+            {
                 X = 0,
                 Y = Pos.Bottom(mainWin) - 5,
                 Width = 15,
@@ -78,7 +81,7 @@ namespace Client
             };
             mainWin.Add(usernameLabel);
 
-//          Надпись Message.
+            //          Надпись Message.
             messageLabel = new Label()
             {
                 X = 0,
@@ -89,7 +92,7 @@ namespace Client
             };
             mainWin.Add(messageLabel);
 
-//          Поле UserName.
+            //          Поле UserName.
             UserField = new TextField()
             {
                 X = 15,
@@ -99,17 +102,17 @@ namespace Client
             };
             mainWin.Add(UserField);
 
-//          Поле Message.
+            //          Поле Message.
             MessageField = new TextField()
             {
                 X = 15,
-                Y = Pos.Bottom(mainWin) - 5,
+                Y = Pos.Bottom(mainWin) - 4,
                 Width = mainWin.Width - 15,
                 Height = 1,
             };
             mainWin.Add(MessageField);
 
-//          Кнопка Send.
+            //          Кнопка Send.
             SendBttn = new Button()
             {
                 X = Pos.Right(mainWin) - 15,
@@ -121,7 +124,7 @@ namespace Client
             mainWin.Add(SendBttn);
             SendBttn.Clicked += SendClick;
 
-//          Цикл получения сообщений.
+            //          Цикл получения сообщений.
             int lastMsgNum = 0;
             Timer updLoop = new Timer();
             updLoop.Interval = 1000;
@@ -139,7 +142,7 @@ namespace Client
 
             Application.Run();
         }
-//      Клик на Send.
+        //      Клик на Send.
         static void SendClick()
         {
             if ((UserField.Text.Length != 0) && (MessageField.Text.Length != 0))
@@ -153,8 +156,8 @@ namespace Client
                 MessageField.Text = "";
             }
         }
-//      Синхронизация списка сообщений
-//      с представлением.
+        //      Синхронизация списка сообщений
+        //      с представлением.
         static void MesUpd()
         {
             messagesBox.RemoveAll();
@@ -175,10 +178,10 @@ namespace Client
             Application.Refresh();
         }
 
-//      Отправка сообщений на сервер.
+        //      Отправка сообщений на сервер.
         static void SendMes(Message txt)
         {
-            WebRequest req = WebRequest.Create("htttp://localhost:5000/api/Mes");
+            WebRequest req = WebRequest.Create("http://localhost:5000/api/Mes");
             req.Method = "POST";
             string postData = JsonConvert.SerializeObject(txt);
             byte[] bytes = Encoding.UTF8.GetBytes(postData);
@@ -190,7 +193,7 @@ namespace Client
             req.GetResponse();
         }
 
-//      Получение сообщений с сервера.
+        //      Получение сообщений с сервера.
         static Message GetMes(int id)
         {
             WebRequest req = WebRequest.Create($"http://localhost:5000/api/Mes/{id}");
@@ -203,4 +206,3 @@ namespace Client
         }
     }
 }
-
