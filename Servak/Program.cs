@@ -11,8 +11,10 @@ namespace Servak
 {
     public class Program
     {
+        public static MessageClass ms;
         public static void Main(string[] args)
         {
+            ms = new MessageClass();
             CreateHostBuilder(args).Build().Run();
         }
 

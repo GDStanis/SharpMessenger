@@ -32,13 +32,15 @@ namespace Client
         {
             Application.Init();
 
-            //          Верхнее меню приложения.
+            ColorScheme GBcolor = new ColorScheme();
+            GBcolor.Normal = new Terminal.Gui.Attribute(Color.Green, Color.Black);
+
+//          Верхнее меню приложения.
             Menu = new MenuBar(new MenuBarItem[] {
                     new MenuBarItem("_App", new MenuItem[] {
                     new MenuItem("_Quit", "-- Close the App.", Application.RequestStop),
                     }),
                     })
-
             {
                 X = 0,
                 Y = 0,
@@ -46,9 +48,10 @@ namespace Client
                 Height = 1,
 
             };
+            //Menu.ColorScheme = GBcolor;
             Application.Top.Add(Menu);
 
-            //          Главное окно приложения.
+//          Главное окно приложения.
             mainWin = new Window()
             {
                 X = 0,
@@ -57,9 +60,11 @@ namespace Client
                 Height = Dim.Fill(),
                 Title = "Sharp Messenger",
             };
+
+            //mainWin.ColorScheme = GBcolor;
             Application.Top.Add(mainWin);
 
-            //          MessagesBox.
+//          MessagesBox.
             messagesBox = new Window()
             {
                 X = 0,
@@ -68,9 +73,11 @@ namespace Client
                 Height = mainWin.Height - 2,
 
             };
+
+            //messagesBox.ColorScheme = GBcolor;
             mainWin.Add(messagesBox);
 
-            //          Надпись UserName.
+//          Надпись UserName.
             usernameLabel = new Label()
             {
                 X = 0,
@@ -79,9 +86,10 @@ namespace Client
                 Height = 1,
                 Text = "UserName:",
             };
+
             mainWin.Add(usernameLabel);
 
-            //          Надпись Message.
+//          Надпись Message.
             messageLabel = new Label()
             {
                 X = 0,
@@ -92,7 +100,7 @@ namespace Client
             };
             mainWin.Add(messageLabel);
 
-            //          Поле UserName.
+//          Поле UserName.
             UserField = new TextField()
             {
                 X = 15,
@@ -100,9 +108,11 @@ namespace Client
                 Width = mainWin.Width - 15,
                 Height = 1,
             };
+
+            //UserField.ColorScheme = GBcolor;
             mainWin.Add(UserField);
 
-            //          Поле Message.
+//          Поле Message.
             MessageField = new TextField()
             {
                 X = 15,
@@ -110,21 +120,26 @@ namespace Client
                 Width = mainWin.Width - 15,
                 Height = 1,
             };
+
+//          MessageField.ColorScheme = GBcolor;
             mainWin.Add(MessageField);
 
-            //          Кнопка Send.
+
+//          Кнопка Send.
             SendBttn = new Button()
             {
                 X = Pos.Right(mainWin) - 15,
                 Y = Pos.Bottom(mainWin) - 4,
                 Width = 15,
                 Height = 1,
-                Text = " SEND ",
+                Text = " Send ",
             };
+
+            //SendBttn.ColorScheme = GBcolor;
             mainWin.Add(SendBttn);
             SendBttn.Clicked += SendClick;
 
-            //          Цикл получения сообщений.
+//          Цикл получения сообщений.
             int lastMsgNum = 0;
             Timer updLoop = new Timer();
             updLoop.Interval = 1000;
@@ -142,7 +157,8 @@ namespace Client
 
             Application.Run();
         }
-        //      Клик на Send.
+
+//      Клик на Send.
         static void SendClick()
         {
             if ((UserField.Text.Length != 0) && (MessageField.Text.Length != 0))
@@ -156,8 +172,9 @@ namespace Client
                 MessageField.Text = "";
             }
         }
-        //      Синхронизация списка сообщений
-        //      с представлением.
+
+//      Синхронизация списка сообщений
+//      с представлением.
         static void MesUpd()
         {
             messagesBox.RemoveAll();
@@ -170,7 +187,7 @@ namespace Client
                     Y = offset,
                     Width = messagesBox.Width,
                     Height = 1,
-                    Text = $"[{Data[i].UserName}]: {Data[i].Text}",
+                    Text = $"{Data[i].TimeStamp} [{Data[i].UserName}]: {Data[i].Text}",
                 };
                 messagesBox.Add(txt);
                 offset++;
@@ -178,7 +195,7 @@ namespace Client
             Application.Refresh();
         }
 
-        //      Отправка сообщений на сервер.
+//      Отправка сообщений на сервер.
         static void SendMes(Message txt)
         {
             WebRequest req = WebRequest.Create("http://localhost:5000/api/Mes");
@@ -193,7 +210,7 @@ namespace Client
             req.GetResponse();
         }
 
-        //      Получение сообщений с сервера.
+//      Получение сообщений с сервера.
         static Message GetMes(int id)
         {
             WebRequest req = WebRequest.Create($"http://localhost:5000/api/Mes/{id}");
