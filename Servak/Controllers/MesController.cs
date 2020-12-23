@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Servak;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,7 +15,7 @@ namespace Servak.Controllers
     [ApiController]
     public class MesController : ControllerBase
     {
-        static MessageClass ms = new MessageClass();
+        static MessageClass mc = new MessageClass();
 
         // GET api/<MesController>/5
         [HttpGet("{id}")]
@@ -23,9 +24,9 @@ namespace Servak.Controllers
         public ActionResult<string> Get(int id)
         {
             string json = " Not found. ";
-            if ((id < ms.CountMes()) && (id >= 0))
+            if ((id < mc.CountMes()) && (id >= 0))
             {
-                json = JsonSerializer.Serialize(ms.Get(id));
+                json = JsonSerializer.Serialize(mc.Get(id));
                 return json.ToString();
             }
             return NotFound();
@@ -35,8 +36,8 @@ namespace Servak.Controllers
         [HttpPost]
         public void Post([FromBody] Message txt)
         {
-            ms.Add(txt);
-            Console.WriteLine($"({ms.Data.Count-1}) User {txt.UserName} posted: {txt.Text}    {txt.TimeStamp} ");
+            mc.Add(txt);
+            Console.WriteLine($"({mc.Data.Count-1}) User {txt.UserName} posted: {txt.Text}    {txt.TimeStamp} ");
         }
 
     }
