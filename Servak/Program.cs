@@ -1,20 +1,28 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Servak
 {
     public class Program
     {
+
         public static MessageClass ms;
+        public static SessionsClass Sessions;
+        
         public static void Main(string[] args)
         {
-            ms = new MessageClass();
+//          Обработка сообщений
+            ms = new MessageClass();  
+//          Хранение данных сессии (логинов, паролей, токенов).
+            Sessions = new SessionsClass();
+            Sessions.LoadFromFile();
             CreateHostBuilder(args).Build().Run();
         }
 

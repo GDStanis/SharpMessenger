@@ -28,7 +28,8 @@ namespace Servak
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Microsoft.AspNetCore.Hosting.IApplicationLifetime applicationLifetime,
+                      ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -36,13 +37,26 @@ namespace Servak
             }
 
             app.UseRouting();
-
             app.UseAuthorization();
-
+            applicationLifetime.ApplicationStarted.Register(OnApplicationStarted);
+            applicationLifetime.ApplicationStopping.Register(OnApplicationStopping);
+            applicationLifetime.ApplicationStopped.Register(OnApplicationStopped);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }
+        protected void OnApplicationStarted()
+        {
+
+        }
+        protected void OnApplicationStopping()
+        {
+            Program.Sessions.SaveToFile();
+        }
+        protected void OnApplicationStopped()
+        {
+
         }
     }
 }
